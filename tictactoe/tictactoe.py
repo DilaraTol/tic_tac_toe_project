@@ -13,15 +13,28 @@ def initial_state():
     """
     Returns starting state of the board.
     """
-    return [[EMPTY, EMPTY, EMPTY],
+    board = [[EMPTY, EMPTY, EMPTY],
             [EMPTY, EMPTY, EMPTY],
             [EMPTY, EMPTY, EMPTY]]
-
+    return board
 
 def player(board):
     """
     Returns player who has the next turn on a board.
     """
+    count_X=0
+    count_O=0
+    for i in range(len(board)):
+        for j in range(len(board[i])):
+            if board[i][j] == X:
+                count_X+=1
+            elif board[i][j] == O:
+                count_O+=1   
+    if count_X == count_O:
+        return X
+    elif count_X > count_O:
+        return O
+
     raise NotImplementedError
 
 
@@ -29,6 +42,13 @@ def actions(board):
     """
     Returns set of all possible actions (i, j) available on the board.
     """
+    possible_actions=[]
+    for i in range(len(board)):
+        for j in range(len(board[i])):
+            if board[i][j] == EMPTY:
+                possible_actions.append((i,j))
+    return possible_actions        
+
     raise NotImplementedError
 
 
@@ -36,13 +56,33 @@ def result(board, action):
     """
     Returns the board that results from making move (i, j) on the board.
     """
-    raise NotImplementedError
+    copy_board= copy.deepcopy(board)
+    i, j = action
+    if copy_board[i][j] != EMPTY:
+        raise Exception("Invalid move")
+    copy_board[i][j] = player(board)
+    return copy_board
 
 
 def winner(board):
     """
     Returns the winner of the game, if there is one.
     """
+    for i in [0,1,2]:
+        if board[i][0] == board[i][1] == board[i][2] != EMPTY:
+            return board[i][0]
+    for j in [0,1,2]:
+        if board[0][j] == board[1][j] == board[2][j] != EMPTY:
+            return board[0][j]
+
+    if board[0][0] == board[1][1] == board[2][2] != EMPTY:
+        return board[0][0]
+
+    if board[0][2] == board[1][1] == board[2][0] != EMPTY:
+        return board[0][2]
+
+    return None
+
     raise NotImplementedError
 
 
