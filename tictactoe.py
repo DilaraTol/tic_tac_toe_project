@@ -14,22 +14,23 @@ def initial_state():
     Returns starting state of the board.
     """
     board = [[EMPTY, EMPTY, EMPTY],
-            [EMPTY, EMPTY, EMPTY],
-            [EMPTY, EMPTY, EMPTY]]
+             [EMPTY, EMPTY, EMPTY],
+             [EMPTY, EMPTY, EMPTY]]
     return board
+
 
 def player(board):
     """
     Returns player who has the next turn on a board.
     """
-    count_X=0
-    count_O=0
+    count_X = 0
+    count_O = 0
     for i in range(len(board)):
         for j in range(len(board[i])):
             if board[i][j] == X:
-                count_X+=1
+                count_X += 1
             elif board[i][j] == O:
-                count_O+=1   
+                count_O += 1   
     if count_X == count_O:
         return X
     elif count_X > count_O:
@@ -42,11 +43,11 @@ def actions(board):
     """
     Returns set of all possible actions (i, j) available on the board.
     """
-    possible_actions=[]
+    possible_actions = []
     for i in range(len(board)):
         for j in range(len(board[i])):
             if board[i][j] == EMPTY:
-                possible_actions.append((i,j))
+                possible_actions.append((i, j))
     return possible_actions        
 
     raise NotImplementedError
@@ -60,7 +61,7 @@ def result(board, action):
 
     if board[i][j] != EMPTY:
         raise Exception("Invalid move")
-    if (i>2 or i<0) or (j>2 or j<0):
+    if (i > 2 or i < 0) or (j > 2 or j < 0):
         raise Exception("Invalid move")
 
     copy_board = [row[:] for row in board]
@@ -72,10 +73,10 @@ def winner(board):
     """
     Returns the winner of the game, if there is one.
     """
-    for i in [0,1,2]:
+    for i in [0, 1, 2]:
         if board[i][0] == board[i][1] == board[i][2] != EMPTY:
             return board[i][0]
-    for j in [0,1,2]:
+    for j in [0, 1, 2]:
         if board[0][j] == board[1][j] == board[2][j] != EMPTY:
             return board[0][j]
 
@@ -101,7 +102,6 @@ def terminal(board):
             if j == EMPTY:
                 return False
     return True
-
 
 
 def utility(board):
