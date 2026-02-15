@@ -90,18 +90,71 @@ def terminal(board):
     """
     Returns True if game is over, False otherwise.
     """
-    raise NotImplementedError
+    if winner(board) != None:
+        return True
+    for i in range(len(board)):
+        for j in board[i]:
+            if j == EMPTY:
+                return False
+    return True
+
 
 
 def utility(board):
     """
     Returns 1 if X has won the game, -1 if O has won, 0 otherwise.
     """
-    raise NotImplementedError
+    if winner(board) == X:
+        return 1
+    if winner(board) == O:
+        return -1
+    return 0
 
 
 def minimax(board):
     """
     Returns the optimal action for the current player on the board.
     """
-    raise NotImplementedError
+    if terminal(board):
+        return None
+
+    current_player = player(board)
+
+    if current_player == X:
+        best_value = -float('inf')
+        best_move = None
+        for action in actions(board):
+            value = min_value(result(board, action))
+            if value > best_value:
+                best_value = value
+                best_move = action
+        return best_move
+
+    else:
+        best_value = float('inf')
+        best_move = None
+        for action in actions(board):
+            value = max_value(result(board, action))
+            if value < best_value:
+                best_value = value
+                best_move = action
+        return best_move
+
+
+def min_value(board):
+    if terminal(board):
+        return utility(board)
+    v = float('inf')
+    for action in actions(board):
+        v = min(v, max_value(result(board, action)))
+    return v
+
+
+def max_value(board):
+    if terminal(board):
+        return utility(board)
+    v = -float('inf')
+    for action in actions(board):
+        v = max(v, min_value(result(board, action)))
+    return v
+
